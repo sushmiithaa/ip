@@ -3,8 +3,9 @@ import java.util.Scanner;
 public class Friday {
 
     public static final String LINE = "\t____________________________________________________________";
-    private static Task[] tasks = new Task[100];
-    static int commandCount = 0;
+    public static final int MAX_NUM_TASKS = 100;
+    private static Task[] tasks = new Task[MAX_NUM_TASKS];
+    public static int commandCount = 0;
 
     public static void listTasks() {
         System.out.println("\tHere are the tasks in your list:");
@@ -22,7 +23,9 @@ public class Friday {
             tasks[commandCount] = new Deadline(description.split(" /by ")[0], description.split(" /by ")[1]);
             break;
         case "event":
-            tasks[commandCount] = new Event(description.split(" /from ")[0], description.split(" /from ")[1].split(" /to ")[0], description.split(" /from ")[1].split(" /to ")[1]);
+            tasks[commandCount] = new Event(description.split(" /from ")[0],
+                    description.split(" /from ")[1].split(" /to ")[0],
+                    description.split(" /from ")[1].split(" /to ")[1]);
             break;
         }
         commandCount++;
@@ -48,8 +51,8 @@ public class Friday {
         System.out.println(LINE + "\n\t Hello! I'm Friday\n\t What can I do for you?\n" + LINE + "\n");
         Scanner in = new Scanner(System.in);
         String command = in.nextLine();
-        boolean isMark = false;
-        boolean isUnmark = false;
+        boolean isMark;
+        boolean isUnmark;
         while (! command.equals("bye")) {
             System.out.println(LINE);
             isMark = command.startsWith("mark");
