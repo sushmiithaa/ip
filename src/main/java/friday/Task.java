@@ -1,3 +1,5 @@
+package friday;
+
 public class Task {
 
     protected String description;
