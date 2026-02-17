@@ -66,48 +66,48 @@ public class Friday {
 
     private static void markTask(String command) throws FridayException {
         String[] commandComponents = command.split(" ");
-        if (commandComponents.length != REQ_NUM_COMMAND_COMPONENTS){
+        if (commandComponents.length != REQ_NUM_COMMAND_COMPONENTS) {
             throw new FridayException();
         }
         try {
             int taskIndex = Integer.parseInt(commandComponents[1]) -1;
-            if (taskIndex > tasks.size() || taskIndex < 0 || tasks.size() == 0) {
+            if (taskIndex >= tasks.size() || taskIndex < 0 || tasks.size() == 0) {
                 throw new FridayException();
             }
             tasks.get(taskIndex).markAsDone();
             System.out.println("\tNice! I've marked this task as done:");
             System.out.println("\t  " + tasks.get(taskIndex));
         } catch (NumberFormatException e) {
-            System.out.println("\tIncorrect format.\n\tUse the tasks numbers shown in the list to mark tasks");
+            System.out.println("\tIncorrect format.\n\tUse the tasks numbers shown in the list to mark tasks.");
         }
     }
 
     private static void unmarkTask(String command) throws FridayException {
         String[] commandComponents = command.split(" ");
-        if (commandComponents.length != REQ_NUM_COMMAND_COMPONENTS){
+        if (commandComponents.length != REQ_NUM_COMMAND_COMPONENTS) {
             throw new FridayException();
         }
         try {
             int taskIndex = Integer.parseInt(commandComponents[1]) - 1;
-            if (taskIndex > tasks.size() || taskIndex < 0 || tasks.size() == 0) {
+            if (taskIndex >= tasks.size() || taskIndex < 0 || tasks.size() == 0) {
                 throw new FridayException();
             }
             tasks.get(taskIndex).setDone(false);
             System.out.println("\tOK, I've marked this task as not done yet:");
             System.out.println("\t  " + tasks.get(taskIndex));
         } catch (NumberFormatException e) {
-            System.out.println("\tIncorrect format.\n\tUse the tasks numbers shown in the list to unmark tasks");
+            System.out.println("\tIncorrect format.\n\tUse the tasks numbers shown in the list to unmark tasks.");
         }
     }
 
     private static void deleteTask(String command) throws FridayException {
         String[] commandComponents = command.split(" ");
-        if (commandComponents.length != REQ_NUM_COMMAND_COMPONENTS){
+        if (commandComponents.length != REQ_NUM_COMMAND_COMPONENTS) {
             throw new FridayException();
         }
         try {
             int taskIndex = Integer.parseInt(commandComponents[1]) - 1;
-            if (taskIndex > tasks.size() || taskIndex < 0 || tasks.size() == 0) {
+            if (taskIndex >= tasks.size() || taskIndex < 0 || tasks.size() == 0) {
                 throw new FridayException();
             }
             Task taskToBeRemoved = tasks.get(taskIndex);
@@ -117,7 +117,7 @@ public class Friday {
             System.out.println("\t  " + taskToBeRemoved);
             System.out.println("\tNow you have "+ tasks.size() + " task" + (tasks.size() != 1 ? "s" : "") + " in the list.");
         } catch (NumberFormatException e) {
-            System.out.println("\tIncorrect format.\n\tUse the tasks numbers shown in the list to delete tasks");
+            System.out.println("\tIncorrect format.\n\tUse the tasks numbers shown in the list to delete tasks.");
         }
     }
 
@@ -131,7 +131,7 @@ public class Friday {
         isDeadline = commandType.equals("deadline");
         isDelete = commandType.equals("delete");
         boolean isNotValidCommand = !(isList || isMark || isUnmark || isTodo || isEvent || isDeadline || isDelete);
-        if (isNotValidCommand){
+        if (isNotValidCommand) {
             throw new FridayException();
         }
     }
