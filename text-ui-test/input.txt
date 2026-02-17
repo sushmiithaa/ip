@@ -14,11 +14,18 @@ mark 0
 mark borrow
 mark 5
 mark 3
+marking
 list
 unmark 0
 unmark borrow
 unmark 5
 unmark 3
+unmarking
+list
+delete
+delete 0
+delete borrow
+delete 1
 list
 blah
 bye
