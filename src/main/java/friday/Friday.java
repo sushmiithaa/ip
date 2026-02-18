@@ -1,5 +1,9 @@
 package friday;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -17,7 +21,7 @@ public class Friday {
         }
     }
 
-    public static void addTask(String[] commandComponents) throws FridayException {
+    public static void addTask(String[] commandComponents, boolean fromFile) throws FridayException {
         if (commandComponents.length < REQ_NUM_COMMAND_COMPONENTS || commandComponents[1].isBlank()) {
             throw new FridayException();
         }
@@ -28,29 +32,50 @@ public class Friday {
             tasks.add(new Todo(description));
             break;
         case "deadline":
-            String[] deadlineDetails = description.split(" /by ");
-            if (description.split(" /by ").length != REQ_NUM_COMMAND_COMPONENTS) {
+            if (description.split(" /by ").length != REQ_NUM_COMMAND_COMPONENTS && !fromFile) {
                 throw new FridayException();
             }
-            String deadlineDescription = deadlineDetails[0];
-            String dateTime = deadlineDetails[1];
+            String deadlineDescription;
+            String dateTime;
+
+            if (fromFile) {
+                String[] deadlineDetailsFromFile = description.split(" [|] ");
+                deadlineDescription = deadlineDetailsFromFile[0];
+                dateTime = deadlineDetailsFromFile[1];
+            } else {
+                String[] deadlineDetails = description.split(" /by ");
+                deadlineDescription = deadlineDetails[0];
+                dateTime = deadlineDetails[1];
+            }
 
             tasks.add(new Deadline(deadlineDescription, dateTime));
             break;
+
         case "event":
-            String[] eventDetails = description.split(" /from ");
-            boolean noFrom = eventDetails.length != REQ_NUM_COMMAND_COMPONENTS;
-            if (noFrom) {
-                throw new FridayException();
+            String eventDescription;
+            String eventFrom;
+            String eventTo;
+
+            if (!fromFile) {
+                String[] eventDetails = description.split(" /from ");
+                boolean noFrom = eventDetails.length != REQ_NUM_COMMAND_COMPONENTS;
+                if (noFrom) {
+                    throw new FridayException();
+                }
+                String[] eventTimeDetails = eventDetails[1].split(" /to ");
+                boolean noTo = eventTimeDetails.length != REQ_NUM_COMMAND_COMPONENTS;
+                if (noTo) {
+                    throw new FridayException();
+                }
+
+                eventDescription = eventDetails[0];
+                eventFrom = eventTimeDetails[0];
+                eventTo = eventTimeDetails[1];
+            } else {
+                eventDescription = description.split(" [|] ")[0];
+                eventFrom = description.split(" [|] ")[1].split("-")[0];
+                eventTo = description.split(" [|] ")[1].split("-")[1];
             }
-            String[] eventTimeDetails = eventDetails[1].split(" /to ");
-            boolean noTo = eventTimeDetails.length != REQ_NUM_COMMAND_COMPONENTS;
-            if (noTo) {
-                throw new FridayException();
-            }
-            String eventDescription = eventDetails[0];
-            String eventFrom = eventTimeDetails[0];
-            String eventTo = eventTimeDetails[1];
 
             tasks.add(new Event(eventDescription, eventFrom, eventTo));
             break;
@@ -62,6 +87,7 @@ public class Friday {
         System.out.println("\tGot it. I've added this task:");
         System.out.println("\t  " + tasks.get(taskCount-1));
         System.out.println("\tNow you have "+ taskCount + " task" + (taskCount != 1 ? "s" : "") + " in the list.");
+        updateFile();
     }
 
     private static void markTask(String command) throws FridayException {
@@ -71,12 +97,13 @@ public class Friday {
         }
         try {
             int taskIndex = Integer.parseInt(commandComponents[1]) -1;
-            if (taskIndex >= tasks.size() || taskIndex < 0 || tasks.size() == 0) {
+            if (taskIndex >= tasks.size() || taskIndex < 0) {
                 throw new FridayException();
             }
             tasks.get(taskIndex).markAsDone();
             System.out.println("\tNice! I've marked this task as done:");
             System.out.println("\t  " + tasks.get(taskIndex));
+            updateFile();
         } catch (NumberFormatException e) {
             System.out.println("\tIncorrect format.\n\tUse the tasks numbers shown in the list to mark tasks.");
         }
@@ -89,12 +116,13 @@ public class Friday {
         }
         try {
             int taskIndex = Integer.parseInt(commandComponents[1]) - 1;
-            if (taskIndex >= tasks.size() || taskIndex < 0 || tasks.size() == 0) {
+            if (taskIndex >= tasks.size() || taskIndex < 0) {
                 throw new FridayException();
             }
             tasks.get(taskIndex).setDone(false);
             System.out.println("\tOK, I've marked this task as not done yet:");
             System.out.println("\t  " + tasks.get(taskIndex));
+            updateFile();
         } catch (NumberFormatException e) {
             System.out.println("\tIncorrect format.\n\tUse the tasks numbers shown in the list to unmark tasks.");
         }
@@ -107,7 +135,7 @@ public class Friday {
         }
         try {
             int taskIndex = Integer.parseInt(commandComponents[1]) - 1;
-            if (taskIndex >= tasks.size() || taskIndex < 0 || tasks.size() == 0) {
+            if (taskIndex >= tasks.size() || taskIndex < 0) {
                 throw new FridayException();
             }
             Task taskToBeRemoved = tasks.get(taskIndex);
@@ -116,8 +144,21 @@ public class Friday {
             System.out.println("\tNoted. I've removed this task:");
             System.out.println("\t  " + taskToBeRemoved);
             System.out.println("\tNow you have "+ tasks.size() + " task" + (tasks.size() != 1 ? "s" : "") + " in the list.");
+            updateFile();
         } catch (NumberFormatException e) {
             System.out.println("\tIncorrect format.\n\tUse the tasks numbers shown in the list to delete tasks.");
+        }
+    }
+
+    private static void updateFile() {
+        try {
+            FileWriter fw = new FileWriter("./data/friday.txt");
+            for (int i = 0; i < tasks.size(); i++) {
+                fw.write(tasks.get(i).printString() + "\n");
+            }
+            fw.close();
+        } catch (IOException ex) {
+            System.out.println("Something went wrong");
         }
     }
 
@@ -136,8 +177,52 @@ public class Friday {
         }
     }
 
+    private static void createFile() {
+        new File("./data").mkdirs();
+        try {
+            FileWriter fw = new FileWriter("./data/friday.txt");
+            fw.write("Testing writing new file");
+            fw.close();
+        } catch (IOException ex) {
+            System.out.println("Something went wrong");
+        }
+    }
+
+    private static void loadData() {
+        try {
+            File f = new File("./data/friday.txt");
+            Scanner s = new Scanner(f);
+            while (s.hasNext()) {
+                String[] taskComponents = s.nextLine().split(" [|] ",3);
+                String[] commandComponents = new String[2];
+                switch (taskComponents[0]){
+                case "T":
+                    commandComponents[0] = "todo";
+                    break;
+                case "D":
+                    commandComponents[0] = "deadline";
+                    break;
+                case "E":
+                    commandComponents[0] = "event";
+                    break;
+                }
+                commandComponents[1] = taskComponents[2];
+                addTask(commandComponents,true);
+                if (taskComponents[1].equals("1")){
+                    tasks.get(tasks.size()-1).markAsDone();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            createFile();
+        } catch (FridayException e) {
+            System.out.println("\tUnable to detect the tasks in the text file");
+        }
+    }
+
+
     public static void main(String[] args) {
         System.out.println(LINE + "\n\t Hello! I'm Friday\n\t What can I do for you?\n" + LINE + "\n");
+        loadData();
         Scanner in = new Scanner(System.in);
         String command = in.nextLine().stripLeading();
         while (! command.equals("bye")) {
@@ -164,7 +249,7 @@ public class Friday {
             } else if (isTodo || isEvent || isDeadline) {
                 String[] commandComponents = command.split(" ", REQ_NUM_COMMAND_COMPONENTS);
                 try {
-                    addTask(commandComponents);
+                    addTask(commandComponents,false);
                     printAddedTask();
                 }
                 catch (FridayException e) {
