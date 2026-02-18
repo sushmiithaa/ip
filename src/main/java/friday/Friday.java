@@ -11,6 +11,7 @@ public class Friday {
 
     public static final String LINE = "\t____________________________________________________________";
     public static final int REQ_NUM_COMMAND_COMPONENTS = 2;
+    public static final int REQ_NUM_COMPONENTS_FILE = 3;
     private static ArrayList<Task> tasks = new ArrayList<>();
     public static boolean isList, isMark, isUnmark, isTodo , isEvent, isDeadline, isDelete;
 
@@ -72,9 +73,12 @@ public class Friday {
                 eventFrom = eventTimeDetails[0];
                 eventTo = eventTimeDetails[1];
             } else {
-                eventDescription = description.split(" [|] ")[0];
-                eventFrom = description.split(" [|] ")[1].split("-")[0];
-                eventTo = description.split(" [|] ")[1].split("-")[1];
+                String[] eventDetailsFromFile = description.split(" [|] ");
+                String[] eventTimeDetailsFromFile = eventDetailsFromFile[1].split("-");
+
+                eventDescription = eventDetailsFromFile[0];
+                eventFrom = eventTimeDetailsFromFile[0];
+                eventTo = eventTimeDetailsFromFile[1];
             }
 
             tasks.add(new Event(eventDescription, eventFrom, eventTo));
@@ -150,18 +154,6 @@ public class Friday {
         }
     }
 
-    private static void updateFile() {
-        try {
-            FileWriter fw = new FileWriter("./data/friday.txt");
-            for (int i = 0; i < tasks.size(); i++) {
-                fw.write(tasks.get(i).printString() + "\n");
-            }
-            fw.close();
-        } catch (IOException ex) {
-            System.out.println("Something went wrong");
-        }
-    }
-
     private static void findCommandType(String command) throws FridayException {
         String commandType = command.split(" ", REQ_NUM_COMMAND_COMPONENTS)[0];
         isList = commandType.equals("list");
@@ -177,25 +169,67 @@ public class Friday {
         }
     }
 
-    private static void createFile() {
-        new File("./data").mkdirs();
+    private static void updateFile() {
+        String[] directories = System.getProperty("user.dir").split("\\\\");
+        String currDirectory = directories[directories.length-1];
+        FileWriter fw;
         try {
-            FileWriter fw = new FileWriter("./data/friday.txt");
-            fw.write("Testing writing new file");
+            if (currDirectory.equals("ip")){
+                fw = new FileWriter("./data/friday.txt");
+            } else {
+                fw = new FileWriter("../data/friday.txt");
+            }
+            for (Task task : tasks) {
+                fw.write(task.printString() + "\n");
+            }
             fw.close();
         } catch (IOException ex) {
             System.out.println("Something went wrong");
         }
     }
 
+    private static void createFile() {
+        String[] directories = System.getProperty("user.dir").split("\\\\");
+        String currDirectory = directories[directories.length-1];
+        if (currDirectory.equals("ip")) {
+            new File("./data").mkdirs();
+            try {
+                FileWriter fw = new FileWriter("./data/friday.txt");
+                fw.write("Testing writing new file");
+                fw.close();
+            } catch (IOException ex) {
+                System.out.println("Something went wrong");
+            }
+        } else {
+            new File("../data").mkdirs();
+            try {
+                FileWriter fw = new FileWriter("../data/friday.txt");
+                fw.write("Testing writing new file");
+                fw.close();
+            } catch (IOException ex) {
+                System.out.println("Something went wrong");
+            }
+        }
+    }
+
     private static void loadData() {
         try {
-            File f = new File("./data/friday.txt");
+            String[] directories = System.getProperty("user.dir").split("\\\\");
+            String currDirectory = directories[directories.length-1];
+            File f;
+            if (currDirectory.equals("ip")) {
+                f = new File("./data/friday.txt");
+            } else {
+                f = new File("../data/friday.txt");
+            }
             Scanner s = new Scanner(f);
             while (s.hasNext()) {
-                String[] taskComponents = s.nextLine().split(" [|] ",3);
+                String[] taskComponents = s.nextLine().split(" [|] ",REQ_NUM_COMPONENTS_FILE);
                 String[] commandComponents = new String[2];
-                switch (taskComponents[0]){
+                String taskType = taskComponents[0];
+                String taskDescription = taskComponents[2];
+                String taskDoneStatus = taskComponents[1];
+                switch (taskType){
                 case "T":
                     commandComponents[0] = "todo";
                     break;
@@ -206,9 +240,9 @@ public class Friday {
                     commandComponents[0] = "event";
                     break;
                 }
-                commandComponents[1] = taskComponents[2];
+                commandComponents[1] = taskDescription;
                 addTask(commandComponents,true);
-                if (taskComponents[1].equals("1")){
+                if (taskDoneStatus.equals("1")){
                     tasks.get(tasks.size()-1).markAsDone();
                 }
             }
@@ -232,30 +266,44 @@ public class Friday {
             } catch (FridayException e) {
                 System.out.println("\tCommand is invalid.");
             }
-            if (isList) {
+            String commandType = command.split(" ", REQ_NUM_COMMAND_COMPONENTS)[0];
+            switch (commandType){
+            case "list":
                 listTasks();
-            } else if (isMark || isUnmark || isDelete) {
+                break;
+            case "mark":
                 try {
-                    if (isMark) {
-                        markTask(command);
-                    } else if (isUnmark) {
-                        unmarkTask(command);
-                    } else {
-                        deleteTask(command);
-                    }
-                } catch (FridayException exception) {
-                    System.out.println("\tInvalid number. Task does not exist.\n\tUse the tasks numbers shown in the list");
+                    markTask(command);
+                } catch (FridayException e) {
+                    System.out.println("\tInvalid number. Task does not exist.\n\tUse the tasks numbers shown in the list to mark tasks.");
                 }
-            } else if (isTodo || isEvent || isDeadline) {
-                String[] commandComponents = command.split(" ", REQ_NUM_COMMAND_COMPONENTS);
+                break;
+            case "unmark":
                 try {
+                    unmarkTask(command);
+                } catch (FridayException e) {
+                    System.out.println("\tInvalid number. Task does not exist.\n\tUse the tasks numbers shown in the list to unmark tasks.");
+                }
+                break;
+            case "delete":
+                try {
+                    deleteTask(command);
+                } catch (FridayException e) {
+                    System.out.println("\tInvalid number. Task does not exist.\n\tUse the tasks numbers shown in the list to delete tasks.");
+                }
+                break;
+            case "todo", "event", "deadline":
+                try {
+                    String[] commandComponents = command.split(" ", REQ_NUM_COMMAND_COMPONENTS);
                     addTask(commandComponents,false);
                     printAddedTask();
                 }
                 catch (FridayException e) {
                     System.out.println("\tDescription of task is empty/incorrect format.");
                 }
+                break;
             }
+
             System.out.println(LINE + "\n");
             command = in.nextLine().stripLeading();
         }
