@@ -1,30 +1,31 @@
 package friday;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Friday {
 
     public static final int REQ_NUM_COMMAND_COMPONENTS = 2;
-    public static final int REQ_NUM_COMPONENTS_FILE = 3;
     private static ArrayList<Task> tasks = new ArrayList<>();
     public static boolean isList, isMark, isUnmark, isTodo , isEvent, isDeadline, isDelete;
 
     private Ui ui;
+    private Storage storage;
 
-    public Friday(){
+    public Friday(String filePath){
         ui = new Ui();
+        storage = new Storage(filePath);
     }
 
     public void run() {
         ui.showGreeting();
-        loadData();
         Scanner in = new Scanner(System.in);
         String command = in.nextLine().stripLeading();
+        try {
+            tasks = storage.loadData();
+        } catch (FridayException e) {
+            ui.showErrorMessage("file detect tasks");
+        }
         while (! command.equals("bye")) {
             ui.printLine();
             try {
@@ -42,7 +43,7 @@ public class Friday {
                     String[] commandComponents = command.split(" ", REQ_NUM_COMMAND_COMPONENTS);
                     addTask(commandComponents,false);
                     ui.printAddedTask(tasks);
-                    updateFile();
+                    storage.updateFile(tasks);
                 }
                 catch (FridayException e) {
                     ui.showErrorMessage("task");
@@ -152,7 +153,7 @@ public class Friday {
             }
             tasks.get(taskIndex).markAsDone();
             ui.showMarkedMessage(tasks,taskIndex);
-            updateFile();
+            storage.updateFile(tasks);
         } catch (NumberFormatException e) {
             ui.showErrorMessage("mark format");
         }
@@ -171,7 +172,7 @@ public class Friday {
             }
             tasks.get(taskIndex).setDone(false);
             ui.showUnmarkedMessage(tasks,taskIndex);
-            updateFile();
+            storage.updateFile(tasks);
         } catch (NumberFormatException e) {
             ui.showErrorMessage("unmark format");
         }
@@ -191,7 +192,7 @@ public class Friday {
             tasks.remove(taskIndex);
 
             ui.showDeleteMessage(tasks,taskToBeRemoved);
-            updateFile();
+            storage.updateFile(tasks);
         } catch (NumberFormatException e) {
             ui.showErrorMessage("delete format");
 
@@ -213,92 +214,7 @@ public class Friday {
         }
     }
 
-    private void updateFile() {
-        String[] directories = System.getProperty("user.dir").split("\\\\");
-        String currDirectory = directories[directories.length-1];
-        FileWriter fw;
-        try {
-            if (currDirectory.equals("ip")){
-                fw = new FileWriter("./data/friday.txt");
-            } else {
-                fw = new FileWriter("../data/friday.txt");
-            }
-            for (Task task : tasks) {
-                fw.write(task.printString() + "\n");
-            }
-            fw.close();
-        } catch (IOException ex) {
-            ui.showErrorMessage("io");
-        }
-    }
-
-    public void createFile() {
-        String[] directories = System.getProperty("user.dir").split("\\\\");
-        String currDirectory = directories[directories.length-1];
-        if (currDirectory.equals("ip")) {
-            new File("./data").mkdirs();
-            try {
-                FileWriter fw = new FileWriter("./data/friday.txt");
-                fw.write("Testing writing new file");
-                fw.close();
-            } catch (IOException ex) {
-                ui.showErrorMessage("io");
-            }
-        } else {
-            new File("../data").mkdirs();
-            try {
-                FileWriter fw = new FileWriter("../data/friday.txt");
-                fw.write("Testing writing new file");
-                fw.close();
-            } catch (IOException ex) {
-                ui.showErrorMessage("io");
-            }
-        }
-    }
-
-    public void loadData() {
-        try {
-            String[] directories = System.getProperty("user.dir").split("\\\\");
-            String currDirectory = directories[directories.length-1];
-            File f;
-            if (currDirectory.equals("ip")) {
-                f = new File("./data/friday.txt");
-            } else {
-                f = new File("../data/friday.txt");
-            }
-            Scanner s = new Scanner(f);
-            while (s.hasNext()) {
-                String[] taskComponents = s.nextLine().split(" [|] ",REQ_NUM_COMPONENTS_FILE);
-                String[] commandComponents = new String[2];
-                String taskType = taskComponents[0];
-                String taskDescription = taskComponents[2];
-                String taskDoneStatus = taskComponents[1];
-                switch (taskType){
-                case "T":
-                    commandComponents[0] = "todo";
-                    break;
-                case "D":
-                    commandComponents[0] = "deadline";
-                    break;
-                case "E":
-                    commandComponents[0] = "event";
-                    break;
-                }
-                commandComponents[1] = taskDescription;
-                addTask(commandComponents,true);
-                if (taskDoneStatus.equals("1")){
-                    tasks.get(tasks.size()-1).markAsDone();
-                }
-            }
-        } catch (FileNotFoundException e) {
-            createFile();
-        } catch (FridayException e) {
-            ui.showErrorMessage("file detect tasks");
-        }
-    }
-
-
     public static void main(String[] args) {
-        new Friday().run();
+        new Friday("data/friday.txt").run();
     }
 }
