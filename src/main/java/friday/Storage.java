@@ -16,12 +16,12 @@ public class Storage {
     public Storage(String fileName){
         this.fileName = fileName;
     }
-    public void updateFile(ArrayList<Task> tasks) {
+    public void updateFile(TaskList tasks) {
         FileWriter fw;
         try {
             fw = new FileWriter(fileName);
-            for (Task task : tasks) {
-                fw.write(task.printString() + "\n");
+            for (int i = 0; i < tasks.taskCount(); i++) {
+                fw.write(tasks.get(i).printString() + "\n");
             }
             fw.close();
         } catch (IOException ex) {

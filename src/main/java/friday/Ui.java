@@ -6,15 +6,15 @@ public class Ui {
 
     public String LINE = "\t____________________________________________________________";
 
-    public void listTasks(ArrayList<Task> tasks) {
+    public void listTasks(TaskList tasks) {
         System.out.println("\tHere are the tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
+        for (int i = 0; i < tasks.taskCount(); i++) {
             System.out.println("\t" + (i + 1) + "." + tasks.get(i));
         }
     }
 
-    public void printAddedTask(ArrayList<Task> tasks) {
-        int taskCount = tasks.size();
+    public void printAddedTask(TaskList tasks) {
+        int taskCount = tasks.taskCount();
         System.out.println("\tGot it. I've added this task:");
         System.out.println("\t  " + tasks.get(taskCount - 1));
         System.out.println("\tNow you have " + taskCount + " task" + (taskCount != 1 ? "s" : "") + " in the list.");
