@@ -13,8 +13,8 @@ public class Ui {
         }
     }
 
-    public void printAddedTask(TaskList tasks) {
-        int taskCount = tasks.taskCount();
+    public void printAddedTask(ArrayList<Task> tasks) {
+        int taskCount = tasks.size();
         System.out.println("\tGot it. I've added this task:");
         System.out.println("\t  " + tasks.get(taskCount - 1));
         System.out.println("\tNow you have " + taskCount + " task" + (taskCount != 1 ? "s" : "") + " in the list.");
@@ -77,6 +77,7 @@ public class Ui {
         System.out.println("\tNice! I've marked this task as done:");
         System.out.println("\t  " + tasks.get(taskIndex));
     }
+
     public void showUnmarkedMessage(ArrayList<Task> tasks,int taskIndex){
         System.out.println("\tOK, I've marked this task as not done yet:");
         System.out.println("\t  " + tasks.get(taskIndex));
