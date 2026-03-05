@@ -42,6 +42,7 @@ public class Storage {
     }
 
     public ArrayList<Task> loadData() throws FridayException {
+        boolean cannotDetectDivider = false;
         ArrayList<Task> fileTasks = new ArrayList<>();
         try {
             File f;
@@ -60,8 +61,11 @@ public class Storage {
             }
         } catch (FileNotFoundException e) {
             createFile();
+        } catch (ArrayIndexOutOfBoundsException ex){
+            ui.showErrorMessage("file detect tasks");
+            cannotDetectDivider = true;
         }
-        if (fileTasks.isEmpty()){
+        if (fileTasks.isEmpty() && !cannotDetectDivider){
             throw new FridayException();
         }
         return fileTasks;
