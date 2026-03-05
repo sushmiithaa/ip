@@ -101,6 +101,6 @@ public class Ui {
     public void showDeleteMessage(ArrayList<Task> tasks,Task taskToBeRemoved){
         System.out.println("\tNoted. I've removed this task:");
         System.out.println("\t  " + taskToBeRemoved);
-        System.out.println("\tNow you have "+ tasks.size() + " task" + (tasks.size() != 1 ? "s" : ""));
+        System.out.println("\tNow you have "+ tasks.size() + " task" + (tasks.size() != 1 ? "s" : "") + " in the list.");
     }
 }

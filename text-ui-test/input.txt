@@ -16,6 +16,10 @@ mark 5
 mark 3
 marking
 list
+find
+finding
+find book
+find test
 unmark 0
 unmark borrow
 unmark 5
