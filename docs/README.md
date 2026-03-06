@@ -13,11 +13,13 @@ Interface (CLI). If you can type fast, Friday can help you manage all your tasks
     - [Unmarking a task: `unmark`](#unmarking-a-task-unmark)
     - [Deleting a task: `delete`](#deleting-a-task-delete)
     - [Finding a task: `find`](#finding-a-task-find)
+    - [Exiting the program: `bye`](#exiting-program-bye)
+  
 - [Command Summary](#command-summary)
 
 # Quick Start
 1. Ensure you have Java 17 or above installed in your Computer.
-2. Download the `.jar` file (ip.jar v0.2) from this link: https://github.com/sushmiithaa/ip/releases
+2. Download the `.jar` file (ip.jar v0.2) from this [link](https://github.com/sushmiithaa/ip/releases)
 3. Copy the file to the folder you want to use as the home folder for your Friday application. 
 4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar ip.jar` command to run the application.
 
@@ -158,17 +160,28 @@ Format: `find KEYWORD`
 Example:  
 `find book`
 
+## Exiting program `bye`
+Exit the program.
+
+    ____________________________________________________________
+	Bye. Hope to see you again soon!
+	____________________________________________________________
+
+Format: `bye`
+
 # Command Summary
-| Action | Format | Example |
-|-------|-------|-------|
-| **list** | `list` | `list` |
-| **add todo** | `todo TASKDESCRIPTION` | `todo borrow book` |
-| **add deadline** | `deadline TASKDESCRIPTION /by DATETIME` | `deadline return book /by Sunday` |
-| **add event** | `event TASKDESCRIPTION /from STARTTIME /to ENDTIME` | `event project meeting /from Mon 2pm /to 4pm` |
-| **mark task** | `mark TASKINDEX` | `mark 1` |
-| **unmark task** | `unmark TASKINDEX` | `unmark 1` |
-| **delete task** | `delete TASKINDEX` | `delete 1` |
-| **find task** | `find KEYWORD` | `find book` |
+
+| Action       | Format                                              | Example                                       |
+|--------------|-----------------------------------------------------|-----------------------------------------------|
+| list         | `list`                                              | `list`                                        |
+| add todo     | `todo TASKDESCRIPTION`                              | `todo borrow book`                            |
+| add deadline | `deadline TASKDESCRIPTION /by DATETIME`             | `deadline return book /by Sunday`             |
+| add event    | `event TASKDESCRIPTION /from STARTTIME /to ENDTIME` | `event project meeting /from Mon 2pm /to 4pm` |
+| mark task    | `mark TASKINDEX`                                    | `mark 1`                                      |
+| unmark task  | `unmark TASKINDEX`                                  | `unmark 1`                                    |
+| delete task  | `delete TASKINDEX`                                  | `delete 1`                                    |
+| find task    | `find KEYWORD`                                      | `find book`                                   |
+| exit         | `bye`                                               | `bye`                                         |
 
 
 
