@@ -1,5 +1,10 @@
 package friday;
 
+import friday.parser.Parser;
+import friday.storage.Storage;
+import friday.task.TaskList;
+import friday.ui.Ui;
+
 import java.util.Scanner;
 
 public class Friday {

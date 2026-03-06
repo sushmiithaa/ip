@@ -1,4 +1,7 @@
-package friday;
+package friday.ui;
+
+import friday.task.TaskList;
+import friday.task.Task;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,8 @@
-package friday;
+package friday.storage;
+
+import friday.FridayException;
+import friday.task.*;
+import friday.ui.Ui;
 
 import java.io.File;
 import java.io.FileNotFoundException;

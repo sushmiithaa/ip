@@ -1,4 +1,8 @@
-package friday;
+package friday.task;
+
+import friday.FridayException;
+import friday.parser.Parser;
+import friday.ui.Ui;
 
 import java.util.ArrayList;
 
