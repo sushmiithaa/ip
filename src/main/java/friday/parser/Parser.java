@@ -89,6 +89,20 @@ public class Parser {
     }
 
     /**
+     * Checks to see if the user input for find is valid and throws exception when it is invalid.
+     *
+     * @param command input entered by user.
+     * @throws FridayException If the number of components in the command is smaller than 2
+     */
+    public String[] checkComponentSizeFind(String command) throws FridayException {
+        String[] commandComponents = command.split(" ");
+        if (commandComponents.length < REQ_NUM_COMMAND_COMPONENTS) {
+            throw new FridayException();
+        }
+        return commandComponents;
+    }
+
+    /**
      * Checks to see if the task description is valid and throws exception when it is invalid.
      *
      * @param commandComponents command components.

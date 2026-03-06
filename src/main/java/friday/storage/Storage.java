@@ -27,7 +27,7 @@ public class Storage {
     /**
      * Updates the text data file with the changes made in the tasks.
      *
-     * @param tasks all the tasks.
+     * @param tasks contains all the tasks.
      */
     public void updateFile(TaskList tasks) {
         FileWriter fw;
@@ -98,7 +98,7 @@ public class Storage {
      *
      * @param taskType the type of task (todo,event,deadline).
      * @param taskDescription task description.
-     * @param fileTasks all the tasks created from the data in the text file.
+     * @param fileTasks contains all the tasks created from the data in the text file.
      */
     private void addTaskFromFile(String taskType, String taskDescription, ArrayList<Task> fileTasks) {
         switch (taskType) {

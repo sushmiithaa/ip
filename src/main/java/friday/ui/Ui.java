@@ -1,6 +1,5 @@
 package friday.ui;
 
-import friday.task.TaskList;
 import friday.task.Task;
 
 import java.util.ArrayList;
@@ -17,9 +16,9 @@ public class Ui {
      *
      * @param tasks all tasks.
      */
-    public void listTasks(TaskList tasks) {
+    public void listTasks(ArrayList<Task> tasks) {
         System.out.println("\tHere are the tasks in your list:");
-        for (int i = 0; i < tasks.taskCount(); i++) {
+        for (int i = 0; i < tasks.size(); i++) {
             System.out.println("\t" + (i + 1) + "." + tasks.get(i));
         }
     }

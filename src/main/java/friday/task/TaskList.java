@@ -13,6 +13,7 @@ public class TaskList {
 
     private ArrayList<Task> tasks;
     public int REQ_NUM_COMMAND_COMPONENTS = 2;
+    public static final int REQ_COMMAND_COMPONENTS_LIST = 1;
     private Ui ui = new Ui();
     private Parser parser = new Parser();
     public boolean isSuccessMark = false;
@@ -29,9 +30,22 @@ public class TaskList {
     }
 
     /**
+     * List all tasks
+     *
+     * @param commandComponents contains all the portions of the command
+     */
+    public void listTasks(String[] commandComponents) {
+        if (commandComponents.length == REQ_COMMAND_COMPONENTS_LIST) {
+            ui.listTasks(tasks);
+        } else {
+            ui.showErrorMessage("command");
+        }
+    }
+
+    /**
      * Adds tasks to the list of tasks.
      *
-     * @param commandComponents all the portions of the command (task description, task type).
+     * @param commandComponents contains all the portions of the command (task description, task type).
      */
     public void addTask(String[] commandComponents) {
         String taskType = null;
@@ -140,13 +154,13 @@ public class TaskList {
     public void findTask(String command) {
         String[] commandComponents = new String[REQ_NUM_COMMAND_COMPONENTS];
         try {
-            commandComponents = parser.checkComponentSize(command);
+            commandComponents = parser.checkComponentSizeFind(command);
             String taskToFind = commandComponents[1];
             int taskNumber = 0;
             int notFoundCounter = 0;
             ui.showFoundTaskGeneralMessage();
             for (Task task: tasks) {
-                if (task.getDescription().contains(taskToFind)){
+                if (task.getDescription().toLowerCase().contains(taskToFind.toLowerCase())){
                     taskNumber++;
                     ui.showFoundTasks(task,taskNumber);
                 } else {

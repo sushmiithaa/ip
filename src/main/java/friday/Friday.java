@@ -43,13 +43,13 @@ public class Friday {
             } catch (FridayException e) {
                 ui.showErrorMessage("command");
             }
-            String commandType = parser.parseCommand(command)[0];
+            String[] commandComponents = parser.parseCommand(command);
+            String commandType = commandComponents[0];
             switch (commandType){
             case "list":
-                ui.listTasks(tasks);
+                tasks.listTasks(commandComponents);
                 break;
             case "todo", "event", "deadline":
-                String[] commandComponents = parser.parseCommand(command);
                 tasks.addTask(commandComponents);
                 if (tasks.isSuccessAdd){
                     storage.updateFile(tasks);
