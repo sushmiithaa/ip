@@ -159,16 +159,17 @@ Example:
 `find book`
 
 # Command Summary
-| Action       | Format and Examples                                                                                         |
-|--------------|-------------------------------------------------------------------------------------------------------------|
-| **list**         | `list`                                                                                                      |
-| **add todo**     | `todo TASKDESCRIPTION`<br/> e.g. `todo borrow book`                                                         |
-| **add deadline** | `deadline TASKDESCRIPTION /by DATETIME`<br/> e.g. `deadline return book /by Sunday`                         |
-| **add event**    | `event TASKDESCRIPTION /from STARTTIME /to ENDTIME`<br/> e.g. `event project meeting /from Mon 2pm /to 4pm` |
-| **mark task**    | `mark TASKINDEX`<br/> e.g. `mark 1`                                                                         |
-| **unmark task**  | `unmark TASKINDEX`<br/> e.g. `unmark 1`                                                                     |
-| **delete task**  | `delete TASKINDEX`<br/> e.g. `delete 1`                                                                     |
-| **find task**    | `find KEYWORD`<br/> e.g. `find book`                                                                        |
+| Action | Format | Example |
+|-------|-------|-------|
+| **list** | `list` | `list` |
+| **add todo** | `todo TASKDESCRIPTION` | `todo borrow book` |
+| **add deadline** | `deadline TASKDESCRIPTION /by DATETIME` | `deadline return book /by Sunday` |
+| **add event** | `event TASKDESCRIPTION /from STARTTIME /to ENDTIME` | `event project meeting /from Mon 2pm /to 4pm` |
+| **mark task** | `mark TASKINDEX` | `mark 1` |
+| **unmark task** | `unmark TASKINDEX` | `unmark 1` |
+| **delete task** | `delete TASKINDEX` | `delete 1` |
+| **find task** | `find KEYWORD` | `find book` |
+
 
 
 
