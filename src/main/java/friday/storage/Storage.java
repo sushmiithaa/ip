@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Saves tasks in the file and loads data from the file.
+ */
 public class Storage {
     protected String fileName;
     public static final int REQ_NUM_COMPONENTS_FILE = 3;
@@ -20,6 +23,12 @@ public class Storage {
     public Storage(String fileName){
         this.fileName = fileName;
     }
+
+    /**
+     * Updates the text data file with the changes made in the tasks.
+     *
+     * @param tasks all the tasks.
+     */
     public void updateFile(TaskList tasks) {
         FileWriter fw;
         try {
@@ -33,6 +42,9 @@ public class Storage {
         }
     }
 
+    /**
+     * Creates a new file in the specified path.
+     */
     public void createFile() {
         String path = fileName.split("/")[0];
         new File("./"+path).mkdirs();
@@ -45,6 +57,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Returns all the tasks that can be found based on the data in the file.
+     *
+     * @return all task from the file.
+     * @throws FridayException If no task objects can be created based on the data in the file.
+     */
     public ArrayList<Task> loadData() throws FridayException {
         boolean cannotDetectDivider = false;
         ArrayList<Task> fileTasks = new ArrayList<>();
@@ -75,6 +93,13 @@ public class Storage {
         return fileTasks;
     }
 
+    /**
+     * Adds task based on the data in the file as Task objects.
+     *
+     * @param taskType the type of task (todo,event,deadline).
+     * @param taskDescription task description.
+     * @param fileTasks all the tasks created from the data in the text file.
+     */
     private void addTaskFromFile(String taskType, String taskDescription, ArrayList<Task> fileTasks) {
         switch (taskType) {
         case "T":

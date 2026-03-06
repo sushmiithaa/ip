@@ -6,6 +6,9 @@ import friday.ui.Ui;
 
 import java.util.ArrayList;
 
+/**
+ * Contains the task list and all operations related to tasks.
+ */
 public class TaskList {
 
     private ArrayList<Task> tasks;
@@ -25,6 +28,11 @@ public class TaskList {
         this.tasks = new ArrayList<>();
     }
 
+    /**
+     * Adds tasks to the list of tasks.
+     *
+     * @param commandComponents all the portions of the command (task description, task type).
+     */
     public void addTask(String[] commandComponents) {
         String taskType = null;
         String description = null;
@@ -62,6 +70,11 @@ public class TaskList {
             ui.showErrorMessage("task");
         }
     }
+    /**
+     * Sets the status of the task to done.
+     *
+     * @param command input entered by user.
+     */
 
     public void markTask(String command) {
         String[] commandComponents = new String[REQ_NUM_COMMAND_COMPONENTS];
@@ -78,6 +91,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Sets the status of the task to not done.
+     *
+     * @param command input entered by user.
+     */
     public void unmarkTask(String command) {
         String[] commandComponents = new String[REQ_NUM_COMMAND_COMPONENTS];
         try {
@@ -93,6 +111,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Removes the task from the list of tasks.
+     *
+     * @param command input entered by user.
+     */
     public void deleteTask(String command) {
         String[] commandComponents = new String[REQ_NUM_COMMAND_COMPONENTS];
         try {
@@ -109,6 +132,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Checks if keyword exists in all the tasks and prints tasks with the keyword.
+     *
+     * @param command input entered by user.
+     */
     public void findTask(String command) {
         String[] commandComponents = new String[REQ_NUM_COMMAND_COMPONENTS];
         try {
@@ -133,10 +161,21 @@ public class TaskList {
         }
     }
 
+    /**
+     * Returns the numbers of tasks in the list of tasks.
+     *
+     * @return numbers of tasks.
+     */
     public int taskCount() {
         return tasks.size();
     }
 
+    /**
+     * Returns the Task object found at the index in the ArrayList of Task objects.
+     *
+     * @param i index of the task represented by the Task object.
+     * @return Task object.
+     */
     public Task get(int i) {
         return tasks.get(i);
     }

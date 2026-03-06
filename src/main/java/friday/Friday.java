@@ -7,6 +7,10 @@ import friday.ui.Ui;
 
 import java.util.Scanner;
 
+/**
+ * Entry point of the Friday application.
+ * Initialises the application and starts the interaction with the user.
+ */
 public class Friday {
 
     private Ui ui;
@@ -25,7 +29,9 @@ public class Friday {
             tasks = new TaskList();
         }
     }
-
+    /**
+     * Executes the different command functions based on the command type.
+     */
     public void run() {
         ui.showGreeting();
         Scanner in = new Scanner(System.in);
