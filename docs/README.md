@@ -1,30 +1,174 @@
-# Duke User Guide
+# Friday user guide
+Friday is a desktop app for managing 
+different types of tasks, optimized for use via a Command Line 
+Interface (CLI). If you can type fast, Friday can help you manage all your tasks in one application conveniently.
+- [Quick Start](#quick-start)
+- [Features](#features)
 
-// Update the title above to match the actual product name
+    - [Listing tasks: `list`](#listing-tasks-list)
+    - [Adding a todo: `todo`](#adding-a-todo-todo)
+    - [Adding a deadline: `deadline`](#adding-a-deadline-deadline)
+    - [Adding an event: `event`](#adding-an-event-event)
+    - [Marking a task: `mark`](#marking-a-task-mark)
+    - [Unmarking a task: `unmark`](#unmarking-a-task-unmark)
+    - [Deleting a task: `delete`](#deleting-a-task-delete)
+    - [Finding a task: `find`](#finding-a-task-find)
+- [Command Summary](#command-summary)
 
-// Product screenshot goes here
+# Quick Start
+1. Ensure you have Java 17 or above installed in your Computer.
+2. Download the `.jar` file (ip.jar v0.2) from this link: https://github.com/sushmiithaa/ip/releases
+3. Copy the file to the folder you want to use as the home folder for your Friday application. 
+4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar ip.jar` command to run the application.
 
-// Product intro goes here
+# Features
+## Listing tasks `list`
 
-## Adding deadlines
+List all tasks stored in the application.
 
-// Describe the action and its outcome.
+    ____________________________________________________________
+    Here are the tasks in your list:
+	1.[T][ ] borrow book
+	2.[D][ ] return book (by: Sunday)
+	3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+    ____________________________________________________________
 
-// Give examples of usage
+Format: `list`
 
-Example: `keyword (optional arguments)`
+## Adding a todo `todo`
+Adds a todo to the list of tasks.
 
-// A description of the expected outcome goes here
+    ____________________________________________________________
+	Got it. I've added this task:
+	  [T][ ] borrow book
+	Now you have 1 task in the list.
+	____________________________________________________________
 
-```
-expected output
-```
+Format: `todo TASKDESCRIPTION`
 
-## Feature ABC
+- The `TASKDESCRIPTION` must not be empty
+- There must be a space between `todo` and `TASKDESCRIPTION`
 
-// Feature details
+Example:  
+`todo borrow book`
+
+## Adding a deadline `deadline`
+Adds a deadline to the list of tasks.
+
+    ____________________________________________________________
+	Got it. I've added this task:
+	  [D][ ] return book (by: Sunday)
+	Now you have 2 tasks in the list.
+	____________________________________________________________
+
+Format: `deadline TASKDESCRIPTION /by DATETIME`
+- The `TASKDESCRIPTION` and `DATETIME` must not be empty
+- There must be a space between `deadline` and `TASKDESCRIPTION` and `/by` and `DATETIME`
 
 
-## Feature XYZ
+Example:  
+`deadline return book /by Sunday`
 
-// Feature details
+## Adding an event `event`
+Adds an event to the list of tasks.
+
+    ____________________________________________________________
+	Got it. I've added this task:
+	  [E][ ] project meeting (from: Mon 2pm to: 4pm)
+	Now you have 3 tasks in the list.
+	____________________________________________________________
+
+Format: `event TASKDESCRIPTION /from STARTTIME /to ENDTIME`
+- The `TASKDESCRIPTION` and `DATETIME` must not be empty
+- There must be a space between `event` and `TASKDESCRIPTION` and `/from` and `STARTIME` `/to` and `ENDTIME`
+- The event must follow the order: `/from STARTTIME` first then `/to ENDTIME`
+
+
+Example:  
+`event project meeting /from Mon 2pm /to 4pm`
+
+## Marking a task `mark`
+Marks a task to change its status to completed.
+
+    ____________________________________________________________
+    Nice! I've marked this task as done:
+        [E][X] project meeting (from: Mon 2pm to: 4pm)
+	____________________________________________________________
+
+Format: `mark TASKINDEX`
+
+- Marks the task at the specified `TASKINDEX`
+- The index refers to the index number shown in the displayed task list.
+- The index must be a positive integer found in the list
+- There must be a space between `mark` and `TASKINDEX`
+
+Example:  
+`mark 1`
+
+## Unmarking a task `unmark`
+Unmarks a task to change its status to incomplete.
+
+    ____________________________________________________________
+    OK, I've marked this task as not done yet:
+        [E][ ] project meeting (from: Mon 2pm to: 4pm)
+	____________________________________________________________
+
+Format: `unmark TASKINDEX`
+- Unmarks the task at the specified `TASKINDEX`
+- The index refers to the index number shown in the displayed task list.
+- The index must be a positive integer found in the list
+- There must be a space between `unmark` and `TASKINDEX`
+
+Example:  
+`unmark 1`
+
+## Deleting a task `delete`
+Deletes a task from the list of tasks.
+
+    ____________________________________________________________
+    Noted. I've removed this task:
+	  [T][ ] borrow book
+	Now you have 2 tasks in the list.
+	____________________________________________________________
+
+Format: `delete TASKINDEX`
+
+- Deletes the task at the specified `TASKINDEX`
+- The index refers to the index number shown in the displayed task list.
+- The index must be a positive integer found in the list
+- There must be a space between `delete` and `TASKINDEX`
+
+Example:  
+`delete 1`
+
+## Finding a task `find`
+Finds a task from the list of tasks based on the keyword.
+
+    ____________________________________________________________
+	Here are the matching tasks in your list:
+	1.[T][ ] borrow book
+	2.[D][ ] return book (by: Sunday)
+	____________________________________________________________
+
+Format: `find KEYWORD`
+- The search is case-insensitive. e.g `book` will match `Book`
+- Only the task description is searched, e.g `find todo` will not display all todos
+- There must be a space between `find` and `KEYWORD`
+
+Example:  
+`find book`
+
+# Command Summary
+| Action       | Format and Examples                                                                                         |
+|--------------|-------------------------------------------------------------------------------------------------------------|
+| **list**         | `list`                                                                                                      |
+| **add todo**     | `todo TASKDESCRIPTION`<br/> e.g. `todo borrow book`                                                         |
+| **add deadline** | `deadline TASKDESCRIPTION /by DATETIME`<br/> e.g. `deadline return book /by Sunday`                         |
+| **add event**    | `event TASKDESCRIPTION /from STARTTIME /to ENDTIME`<br/> e.g. `event project meeting /from Mon 2pm /to 4pm` |
+| **mark task**    | `mark TASKINDEX`<br/> e.g. `mark 1`                                                                         |
+| **unmark task**  | `unmark TASKINDEX`<br/> e.g. `unmark 1`                                                                     |
+| **delete task**  | `delete TASKINDEX`<br/> e.g. `delete 1`                                                                     |
+| **find task**    | `find KEYWORD`<br/> e.g. `find book`                                                                        |
+
+
+
