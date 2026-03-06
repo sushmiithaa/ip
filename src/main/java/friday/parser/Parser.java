@@ -1,4 +1,9 @@
-package friday;
+package friday.parser;
+
+import friday.FridayException;
+import friday.task.Deadline;
+import friday.task.Event;
+import friday.task.Task;
 
 import java.util.ArrayList;
 
@@ -45,7 +50,7 @@ public class Parser {
         return new Deadline(deadlineDescription, dateTime);
     }
 
-    public String[] checkDeleteMarkUnmark(String command) throws FridayException {
+    public String[] checkComponentSize(String command) throws FridayException {
         String[] commandComponents = command.split(" ");
         if (commandComponents.length != REQ_NUM_COMMAND_COMPONENTS) {
             throw new FridayException();
@@ -68,7 +73,7 @@ public class Parser {
     }
 
     public void findCommandType(String command) throws FridayException {
-        boolean isList, isMark, isUnmark, isTodo , isEvent, isDeadline, isDelete;
+        boolean isList, isMark, isUnmark, isTodo , isEvent, isDeadline, isDelete,isFind;
         String commandType = parseCommand(command)[0];
         isList = commandType.equals("list");
         isMark = commandType.equals("mark");
@@ -77,7 +82,8 @@ public class Parser {
         isEvent = commandType.equals("event");
         isDeadline = commandType.equals("deadline");
         isDelete = commandType.equals("delete");
-        boolean isNotValidCommand = !(isList || isMark || isUnmark || isTodo || isEvent || isDeadline || isDelete);
+        isFind = commandType.equals("find");
+        boolean isNotValidCommand = !(isList || isMark || isUnmark || isTodo || isEvent || isDeadline || isDelete || isFind);
         if (isNotValidCommand) {
             throw new FridayException();
         }

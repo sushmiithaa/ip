@@ -1,4 +1,8 @@
-package friday;
+package friday.task;
+
+import friday.FridayException;
+import friday.parser.Parser;
+import friday.ui.Ui;
 
 import java.util.ArrayList;
 
@@ -62,7 +66,7 @@ public class TaskList {
     public void markTask(String command) {
         String[] commandComponents = new String[REQ_NUM_COMMAND_COMPONENTS];
         try {
-            commandComponents = parser.checkDeleteMarkUnmark(command);
+            commandComponents = parser.checkComponentSize(command);
             int taskIndex = parser.checkTaskIndex(commandComponents,tasks);
             tasks.get(taskIndex).markAsDone();
             ui.showMarkedMessage(tasks,taskIndex);
@@ -77,7 +81,7 @@ public class TaskList {
     public void unmarkTask(String command) {
         String[] commandComponents = new String[REQ_NUM_COMMAND_COMPONENTS];
         try {
-            commandComponents = parser.checkDeleteMarkUnmark(command);
+            commandComponents = parser.checkComponentSize(command);
             int taskIndex = parser.checkTaskIndex(commandComponents,tasks);
             tasks.get(taskIndex).setDone(false);
             ui.showUnmarkedMessage(tasks,taskIndex);
@@ -92,7 +96,7 @@ public class TaskList {
     public void deleteTask(String command) {
         String[] commandComponents = new String[REQ_NUM_COMMAND_COMPONENTS];
         try {
-            commandComponents = parser.checkDeleteMarkUnmark(command);
+            commandComponents = parser.checkComponentSize(command);
             int taskIndex = parser.checkTaskIndex(commandComponents,tasks);
             Task taskToBeRemoved = tasks.get(taskIndex);
             tasks.remove(taskIndex);
@@ -102,6 +106,30 @@ public class TaskList {
             ui.showErrorMessage("delete");
         } catch (NumberFormatException e) {
             ui.showErrorMessage("delete format");
+        }
+    }
+
+    public void findTask(String command) {
+        String[] commandComponents = new String[REQ_NUM_COMMAND_COMPONENTS];
+        try {
+            commandComponents = parser.checkComponentSize(command);
+            String taskToFind = commandComponents[1];
+            int taskNumber = 0;
+            int notFoundCounter = 0;
+            ui.showFoundTaskGeneralMessage();
+            for (Task task: tasks) {
+                if (task.getDescription().contains(taskToFind)){
+                    taskNumber++;
+                    ui.showFoundTasks(task,taskNumber);
+                } else {
+                    notFoundCounter++;
+                }
+            }
+            if (notFoundCounter == tasks.size()){
+                ui.showNoTaskFoundMessage();
+            }
+        } catch (FridayException e) {
+            ui.showErrorMessage("find");
         }
     }
 

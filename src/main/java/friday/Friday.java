@@ -1,5 +1,10 @@
 package friday;
 
+import friday.parser.Parser;
+import friday.storage.Storage;
+import friday.task.TaskList;
+import friday.ui.Ui;
+
 import java.util.Scanner;
 
 public class Friday {
@@ -38,29 +43,32 @@ public class Friday {
                 ui.listTasks(tasks);
                 break;
             case "todo", "event", "deadline":
-                    String[] commandComponents = parser.parseCommand(command);
-                    tasks.addTask(commandComponents);
-                    if (tasks.isSuccessAdd){
-                        storage.updateFile(tasks);
-                    }
+                String[] commandComponents = parser.parseCommand(command);
+                tasks.addTask(commandComponents);
+                if (tasks.isSuccessAdd){
+                    storage.updateFile(tasks);
+                }
                 break;
             case "mark":
-                    tasks.markTask(command);
-                    if (tasks.isSuccessMark){
-                        storage.updateFile(tasks);
-                    }
+                tasks.markTask(command);
+                if (tasks.isSuccessMark){
+                    storage.updateFile(tasks);
+                }
                 break;
             case "unmark":
-                   tasks.unmarkTask(command);
-                    if (tasks.isSuccessUnMark){
-                        storage.updateFile(tasks);
-                    }
+                tasks.unmarkTask(command);
+                if (tasks.isSuccessUnMark){
+                    storage.updateFile(tasks);
+                }
                 break;
             case "delete":
-                    tasks.deleteTask(command);
-                    if (tasks.isSuccessDelete){
-                        storage.updateFile(tasks);
-                    }
+                tasks.deleteTask(command);
+                if (tasks.isSuccessDelete){
+                    storage.updateFile(tasks);
+                }
+                break;
+            case "find":
+                tasks.findTask(command);
                 break;
             }
             ui.printLineWithLineBreak();

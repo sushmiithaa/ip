@@ -1,4 +1,7 @@
-package friday;
+package friday.ui;
+
+import friday.task.TaskList;
+import friday.task.Task;
 
 import java.util.ArrayList;
 
@@ -20,6 +23,18 @@ public class Ui {
         System.out.println("\tNow you have " + taskCount + " task" + (taskCount != 1 ? "s" : "") + " in the list.");
     }
 
+    public void showFoundTaskGeneralMessage(){
+        System.out.println("\tHere are the matching tasks in your list:");
+    }
+
+    public void showFoundTasks(Task task, int taskNumber) {
+        System.out.println("\t" + (taskNumber) + "." + task);
+    }
+
+    public void showNoTaskFoundMessage(){
+        System.out.println("\tNo matching tasks found.");
+    }
+
     public void showErrorMessage(String type) {
         switch (type) {
         case "command":
@@ -36,6 +51,9 @@ public class Ui {
             break;
         case "delete":
             System.out.println("\tInvalid number. Task does not exist.\n\tUse the tasks numbers shown in the list to delete tasks.");
+            break;
+        case "find":
+            System.out.println("\tIncorrect format.\n\tInclude a keyword to search the task description.");
             break;
         case "mark format":
             System.out.println("\tIncorrect format.\n\tUse the tasks numbers shown in the list to mark tasks.");
@@ -86,6 +104,6 @@ public class Ui {
     public void showDeleteMessage(ArrayList<Task> tasks,Task taskToBeRemoved){
         System.out.println("\tNoted. I've removed this task:");
         System.out.println("\t  " + taskToBeRemoved);
-        System.out.println("\tNow you have "+ tasks.size() + " task" + (tasks.size() != 1 ? "s" : ""));
+        System.out.println("\tNow you have "+ tasks.size() + " task" + (tasks.size() != 1 ? "s" : "") + " in the list.");
     }
 }
